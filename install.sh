@@ -3,7 +3,7 @@
 echo " "
 echo " GULPFILE BY N.Kh."
 echo " "
-echo " Link: https://github.com/NKh95/gulpfile_by_nkh.git"
+echo " Link: https://github.com/NKh95/gulpfile.git"
 echo " version: 1.0.0"
 echo " "
 echo " Select preprocessor type:"
