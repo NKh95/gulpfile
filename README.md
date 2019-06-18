@@ -1,4 +1,4 @@
-﻿#gulpfile by N.Kh.
+﻿# gulpfile by N.Kh.
 
 ##Version 
 1.0.0
@@ -10,7 +10,7 @@
 
 
 
-##Installation
+## Installation
 BASH:
 
 	chmod +x install.sh
@@ -18,7 +18,7 @@ BASH:
 	./install.sh
 
 
-##Usage
+## Usage
 Browser-sync and build SASS/SCSS to CSS default:
 
 	gulp				//result in folder: app
