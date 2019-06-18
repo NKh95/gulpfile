@@ -1,4 +1,4 @@
-﻿# gulpfile by N.Kh.
+﻿# Gulpfile by N.Kh.
 
 >###### Version: 1.0.0
 
