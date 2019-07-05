@@ -1,11 +1,13 @@
-﻿# Gulpfile by N.Kh.
+﻿# gulpfile by N.Kh.
 
->###### Version: 1.0.0
+>###### Version: 1.0.1
 
 
 ## Requirements
->###### Node.js 8
->###### Gulp 4
+>###### Node.js 8.x.x
+>###### NPM 3.5.x
+>###### Gulp 4.x.x
+>###### BASH 4.x
 
 
 
@@ -20,20 +22,20 @@ BASH:
 ## Usage
 Browser-sync and build SASS/SCSS to CSS default:
 
-	gulp				//result in folder: app
+	gulp
 
 SASS/SCSS to CSS:
 
-	gulp style 			//result in folder: app/css
+	gulp style
 
 Build:
 
-	gulp build 			//result in folder: dist
+	gulp build
 
 View build result:
 
 	gulp view
 
 
-
-
+## Оther
+In `plugins_list` file a list of plugins to install.

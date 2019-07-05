@@ -1,0 +1,11 @@
+gulp
+gulp-sass
+gulp-concat
+gulp-clean-css
+gulp-uglify
+gulp-htmlmin
+gulp-debug
+browser-sync
+gulp-autoprefixer
+gulp-sourcemaps
+node-normalize-scss

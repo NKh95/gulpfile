@@ -43,8 +43,8 @@ function style(){
         .pipe(sass({ includePaths: normalize.includePaths }).on('error', sass.logError))
         .pipe(debug({title: PREPROCESSOR_TYPE}))
         .pipe(debug({title: PREPROCESSOR_TYPE}))
-        .pipe(concat("main.css"))
-        .pipe(debug({title: "concat"}))  
+        .pipe(concat("common.css"))
+        .pipe(debug({title: "concat"}))
         .pipe(sourcemaps.write("map"))
         .pipe(gulp.dest(app.dir + 'css'))
         .pipe(browserSync.stream());
