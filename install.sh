@@ -4,7 +4,7 @@ echo " "
 echo " GULPFILE BY N.Kh."
 echo " "
 echo " Link: https://github.com/NKh95/gulpfile_by_nkh.git"
-echo " version: 1.0.1"
+echo " version: 1.0.2"
 echo " "
 
 echo " Select preprocessor type:"
@@ -12,8 +12,8 @@ echo "   1) SCSS (default)"
 echo "   2) SASS"
 echo " "
 
-SASS="var PREPROCESSOR_TYPE='sass';"
-SCSS="var PREPROCESSOR_TYPE='scss';"
+SASS="const PREPROCESSOR_TYPE='sass';"
+SCSS="const PREPROCESSOR_TYPE='scss';"
 
 read  response_1
 
