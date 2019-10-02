@@ -1,4 +1,8 @@
-const PREPROCESSOR_TYPE='scss';
+"use strict"
+
+const separator = '____________________________________';
+
+const styleType='css';
 
 const gulp         =  require('gulp')                   ;
 const sourcemaps   =  require("gulp-sourcemaps")        ;
@@ -14,17 +18,17 @@ const normalize    =  require('node-normalize-scss')    ;
 const size         =  require('gulp-filesize')          ;
 const del          =  require('del')                    ;
 
-var app = {
-        dir:   './app/',
+let app = {
+        dir:   './src/',
     	css:   'css/**/*.css',
-    	sass:  PREPROCESSOR_TYPE + '/**/*.' + PREPROCESSOR_TYPE,
+    	sass:  styleType + '/**/*.' + styleType,
         html:  '*.html',
         js:    'js/**/*.js',
         img:   'img/**/*.*',
         fonts: 'fonts/**/*.*'
     };
  
-var build = {
+let build = {
         dir:   './dist/',
         css:   'css',
         js:    'js',
@@ -32,49 +36,64 @@ var build = {
         fonts: 'fonts'
     };
 
-gulp.task('default', gulp.series(html, style, js, BrowserSync));
-gulp.task('style', style);
+const html = otherTasks(app.dir + app.html, 'html');
+const js = otherTasks(app.dir + app.js, 'js');
+const css = otherTasks(app.dir + app.css, 'css');
+
+//run tasks
+if(styleType != 'css'){
+    gulp.task('default', gulp.series(html, preprocessorTasks, js, BrowserSync));
+    gulp.task('style', preprocessorTasks);
+
+}else{
+    gulp.task('default', gulp.series(html, css, js, BrowserSync));
+}
+
 gulp.task('build', gulp.series(cleanDist, dist));
 gulp.task('view', viewDist);
 
+//function tasks
 function BrowserSync(){
     browserSync.init({
         server: app.dir
     })
 
+    if(styleType != 'css'){
+        gulp.watch(app.dir + app.sass, gulp.series(preprocessorTasks));
+        gulp.watch(app.dir + app.css).on('change', browserSync.reload);
+    }else{
+        gulp.watch(app.dir + app.css, gulp.series(css));
+    }
+
     gulp.watch(app.dir + app.html, gulp.series(html));
-    gulp.watch(app.dir + app.sass, gulp.series(style));
-    gulp.watch(app.dir + app.css).on('change', browserSync.reload);
     gulp.watch(app.dir + app.js, gulp.series(js));
 }
 
-function style(){
-   return gulp.src(app.dir + app.sass)
+function preprocessorTasks(){
+    console.log(`${separator} \n\n ${styleType} \n`);
+    return gulp.src(app.dir + app.sass)
+        .on('end', () => { console.log(' ') })
         .pipe(size())
+        .pipe(debug({title: 'File'}))
         .pipe(sourcemaps.init())
         .pipe(sass({ includePaths: normalize.includePaths }).on('error', sass.logError))
-        .pipe(debug({title: PREPROCESSOR_TYPE}))
-        .pipe(concat('common.css'))
-        .pipe(debug({title: 'concat'}))
         .pipe(sourcemaps.write('map'))
         .pipe(gulp.dest(app.dir + 'css'))
-        .pipe(size())
         .pipe(browserSync.stream());
+
 }
 
-function html(){
-    return pipes(app.dir + app.html, 'html');
-}
+function  otherTasks(gulpSrc, title){
+    return tasks;
 
-function js(){
-    return pipes(app.dir + app.js, 'js');
-}
-
-function pipes(gulpSrc, debugTitle){
-    return gulp.src(gulpSrc)
-        .pipe(debug({title: debugTitle}))
-        .pipe(size())
-        .pipe(browserSync.stream());
+    function tasks(){
+        console.log(`${separator} \n\n ${title} \n`);
+        return gulp.src(gulpSrc)
+            .on('end', () => { console.log(' ') })
+            .pipe(size())
+            .pipe(debug({title: 'File'}))
+            .pipe(browserSync.stream());
+    }
 }
 
 function dist(done){
