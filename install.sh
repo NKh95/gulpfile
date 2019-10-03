@@ -1,100 +1,116 @@
 #!/bin/bash
+gulpPlugins (){
+	npm i -D gulp
+	npm i -D gulp-sass
+	npm i -D gulp-concat
+	npm i -D gulp-clean-css
+	npm i -D gulp-uglify-es
+	npm i -D gulp-htmlmin
+	npm i -D gulp-debug
+	npm i -D browser-sync
+	npm i -D gulp-autoprefixer
+	npm i -D gulp-sourcemaps
+	npm i -D node-normalize-scss
+	npm i -D gulp-filesize
+	npm i -D browserslist
+	npm i -D del	
+}
 
-echo " "
-echo " GULPFILE BY N.Kh."
-echo " "
-echo " Link: https://github.com/NKh95/gulpfile_by_nkh.git"
-echo " version: 1.0.3"
-echo " "
+header (){
+	reset
+	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.4 \n"
+	i=$(($i+1))
+	echo -e " $i / 4 \n"
+}
 
-echo " Select preprocessor type:"
-echo "   1) CSS (default)"
-echo "   2) SCSS"
-echo "   3) SASS"
-echo " "
+gulpLaunch (){
+	read -r -p " run gulp now? [y/N] " response_0
+	if [[ $response_0 =~ ^([yY])$ ]]; then
+		echo " gulp launch..."
+		gulp
+	fi
+}
 
-S_TYPE="const styleType="
+#page 1
+header
+	echo -e " Select preprocessor type: \n    1) CSS (default) \n    2) SCSS \n    3) SASS"
 
-SASS="'sass';"
-SCSS="'scss';"
-CSS="'css';"
+	S_TYPE="const styleType="
+	SASS="'sass';"
+	SCSS="'scss';"
+	CSS="'css';"
 
-read  response_1
+	read  response_1
 
-if  [[ $response_1 == 1 ]]; then
-	sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
-	dir_type="css"
-	echo " You choosed css."
+	if  [[ $response_1 == 1 ]]; then
+		sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
+		dir_type="css"
 
-elif  [[ $response_1 == 2 ]]; then
+	elif  [[ $response_1 == 2 ]]; then
+		sed -i -e "s/$S_TYPE.*/$S_TYPE$SCSS/" gulpfile.js
+		dir_type="scss"
 
-	sed -i -e "s/$S_TYPE.*/$S_TYPE$SCSS/" gulpfile.js
-	dir_type="scss"
-	echo " You choosed scss."
+	elif  [[ $response_1 == 3 ]]; then
+		sed -i -e "s/$S_TYPE.*/$S_TYPE$SASS/" gulpfile.js
+		dir_type="sass"
 
-elif  [[ $response_1 == 3 ]]; then
+	else
+		sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
+		dir_type="css"
+	fi
 
-	sed -i -e "s/$S_TYPE.*/$S_TYPE$SASS/" gulpfile.js
-	dir_type="sass"
-	echo " You choosed sass."
+#page 2
+header
+	mkdir -p src/{js,css,$dir_type,fonts,img}
+	mkdir -p dist
 
-else
+	read -r -p " Сreate empty source files(file.html/js/sass/scss/css)? [y/N] " response_2
+	if [[ $response_2 =~ ^([yY])$ ]]; then
+	    cd src
+			touch index.html
 
-	sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
-	dir_type="css"
-	echo " default (css)."
-fi
-
-mkdir -p src/{js,css,$dir_type,fonts,img}
-mkdir -p dist
-echo " "
-
-read -r -p " Сreate empty source files(index.html, script.js, common.sass/scss/css)? [y/N] " response_2
-if [[ $response_2 =~ ^([yY])$ ]]; then
-    cd src
-		touch index.html
-
-		cd js
-			touch script.js
-		cd ..
-
-		cd css
-			touch common.css
-		cd ..
-
-		if  [[ $dir_type != "css" ]]; then
-			cd  $dir_type
-				touch common.$dir_type
+			cd js
+				touch script.js
 			cd ..
-		fi
-	cd ..
-	
-	echo " Source files created"
 
-else
-    echo " Source fille not created"
-fi
+			cd css
+				touch common.css
+			cd ..
 
-touch .gitignore
-read -r first_line < .gitignore
-
-if [[ $first_line != "node_modules" ]]; then
-	echo "node_modules" >> .gitignore
-fi
-
-echo " "
-echo " Install/reinstall npm packages."
-echo " "
+			if  [[ $dir_type != "css" ]]; then
+				cd  $dir_type
+					touch common.$dir_type
+				cd ..
+			fi
+		cd ..
+	fi
 
 npm init -y
 
-gulp_plugins_list_file=`cat plugins_list`
-npm i -D $gulp_plugins_list_file
+#page 3
+header
+	read -r -p " Install/reinstall gulp plugins(npm packages)? [y/N] " response_3
+	if [[ $response_3 =~ ^([yY])$ ]]; then
+		echo " "
+		rm -rf node_modules
+		gulpPlugins
+		
+		touch .gitignore
+		read -r first_line < .gitignore
 
-echo " "
+		if [[ $first_line != "node_modules" ]]; then
+			echo "node_modules" >> .gitignore
+		fi
 
-read -r -p " run gulp now? [y/N] " response_3
-if [[ $response_3 =~ ^([yY])$ ]]; then
-	echo " gulp launch..."
-	gulp
-fi
+		#page 4
+		header
+			echo " Gulp plugins installed/reinstalled"
+			echo " "
+			npm list --depth=0
+			echo " "
+			gulpLaunch
+	else
+		#page 5
+		header
+			gulpLaunch
+	fi

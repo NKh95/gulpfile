@@ -1,6 +1,6 @@
 ﻿# gulpfile by N.Kh.
 
->###### Version: 1.0.3
+>###### Version: 1.0.4
 
 
 ## Requirements
@@ -35,7 +35,3 @@ Build:
 View build result:
 
 	gulp view
-
-
-## Оther
-In `plugins_list` file a list of plugins to install.
