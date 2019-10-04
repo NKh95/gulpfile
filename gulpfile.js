@@ -1,6 +1,6 @@
 "use strict"
 
-const stylesheetSyntax='scss';
+const stylesheetSyntax='css';
 
 const gulp         =  require('gulp')                   ;
 const sourcemaps   =  require("gulp-sourcemaps")        ;
@@ -73,7 +73,6 @@ function SassPreprocessorTasks(){
         .pipe(sourcemaps.write('map'))
         .pipe(gulp.dest(app.dir + 'css'))
         .pipe(browserSync.stream());
-
 }
 
 function  otherTasks(gulpSrc, title){

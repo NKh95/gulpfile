@@ -1,7 +1,7 @@
 #!/bin/bash
 header (){
 	reset
-	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.5 \n"
+	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.6 \n"
 	i=$(($i+1))
 	echo -e " $i / 4 \n"
 }
@@ -16,7 +16,7 @@ gulpLaunch (){
 
 #page 1
 header
-	echo -e " Select preprocessor type: \n    1) CSS (default) \n    2) SCSS \n    3) SASS \n"
+	echo -e " Select stylesheet syntax: \n    1) CSS (default) \n    2) SCSS \n    3) SASS \n"
 	
 	S_TYPE="onst stylesheetSyntax="
 	SASS="'sass';"
