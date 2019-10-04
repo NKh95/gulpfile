@@ -1,8 +1,6 @@
 "use strict"
 
-const separator = '____________________________________';
-
-const styleType='css';
+const stylesheetSyntax='scss';
 
 const gulp         =  require('gulp')                   ;
 const sourcemaps   =  require("gulp-sourcemaps")        ;
@@ -17,11 +15,12 @@ const browserSync  =  require('browser-sync').create()  ;
 const normalize    =  require('node-normalize-scss')    ;
 const size         =  require('gulp-filesize')          ;
 const del          =  require('del')                    ;
+const separator = '____________________________________';
 
 let app = {
         dir:   './src/',
     	css:   'css/**/*.css',
-    	sass:  styleType + '/**/*.' + styleType,
+    	sass:  stylesheetSyntax + '/**/*.' + stylesheetSyntax,
         html:  '*.html',
         js:    'js/**/*.js',
         img:   'img/**/*.*',
@@ -41,14 +40,8 @@ const js = otherTasks(app.dir + app.js, 'js');
 const css = otherTasks(app.dir + app.css, 'css');
 
 //run tasks
-if(styleType != 'css'){
-    gulp.task('default', gulp.series(html, preprocessorTasks, js, BrowserSync));
-    gulp.task('style', preprocessorTasks);
-
-}else{
-    gulp.task('default', gulp.series(html, css, js, BrowserSync));
-}
-
+gulp.task('default', gulp.series(html, (stylesheetSyntax != 'css') ? SassPreprocessorTasks : css, js, BrowserSync));
+gulp.task('style', SassPreprocessorTasks);
 gulp.task('build', gulp.series(cleanDist, dist));
 gulp.task('view', viewDist);
 
@@ -58,8 +51,8 @@ function BrowserSync(){
         server: app.dir
     })
 
-    if(styleType != 'css'){
-        gulp.watch(app.dir + app.sass, gulp.series(preprocessorTasks));
+    if(stylesheetSyntax != 'css'){
+        gulp.watch(app.dir + app.sass, gulp.series(SassPreprocessorTasks));
         gulp.watch(app.dir + app.css).on('change', browserSync.reload);
     }else{
         gulp.watch(app.dir + app.css, gulp.series(css));
@@ -69,8 +62,8 @@ function BrowserSync(){
     gulp.watch(app.dir + app.js, gulp.series(js));
 }
 
-function preprocessorTasks(){
-    console.log(`${separator} \n\n ${styleType} \n`);
+function SassPreprocessorTasks(){
+    console.log(`${separator} \n\n ${stylesheetSyntax} \n`);
     return gulp.src(app.dir + app.sass)
         .on('end', () => { console.log(' ') })
         .pipe(size())

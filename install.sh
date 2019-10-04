@@ -1,24 +1,7 @@
 #!/bin/bash
-gulpPlugins (){
-	npm i -D gulp
-	npm i -D gulp-sass
-	npm i -D gulp-concat
-	npm i -D gulp-clean-css
-	npm i -D gulp-uglify-es
-	npm i -D gulp-htmlmin
-	npm i -D gulp-debug
-	npm i -D browser-sync
-	npm i -D gulp-autoprefixer
-	npm i -D gulp-sourcemaps
-	npm i -D node-normalize-scss
-	npm i -D gulp-filesize
-	npm i -D browserslist
-	npm i -D del	
-}
-
 header (){
 	reset
-	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.4 \n"
+	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.5 \n"
 	i=$(($i+1))
 	echo -e " $i / 4 \n"
 }
@@ -33,15 +16,14 @@ gulpLaunch (){
 
 #page 1
 header
-	echo -e " Select preprocessor type: \n    1) CSS (default) \n    2) SCSS \n    3) SASS"
-
-	S_TYPE="const styleType="
+	echo -e " Select preprocessor type: \n    1) CSS (default) \n    2) SCSS \n    3) SASS \n"
+	
+	S_TYPE="onst stylesheetSyntax="
 	SASS="'sass';"
 	SCSS="'scss';"
 	CSS="'css';"
 
-	read  response_1
-
+	read response_1
 	if  [[ $response_1 == 1 ]]; then
 		sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
 		dir_type="css"
@@ -64,7 +46,7 @@ header
 	mkdir -p src/{js,css,$dir_type,fonts,img}
 	mkdir -p dist
 
-	read -r -p " Сreate empty source files(file.html/js/sass/scss/css)? [y/N] " response_2
+	read -r -p " Сreate empty source files(.html, .js, .$dir_type)? [y/N]: " response_2
 	if [[ $response_2 =~ ^([yY])$ ]]; then
 	    cd src
 			touch index.html
@@ -89,12 +71,13 @@ npm init -y
 
 #page 3
 header
-	read -r -p " Install/reinstall gulp plugins(npm packages)? [y/N] " response_3
+	read -r -p " Install/reinstall gulp plugins(npm packages)? [y/N]: " response_3
 	if [[ $response_3 =~ ^([yY])$ ]]; then
-		echo " "
 		rm -rf node_modules
-		gulpPlugins
-		
+
+		gulp_plugins_list_file=`cat plugins_list`
+		npm i --save-dev $gulp_plugins_list_file
+
 		touch .gitignore
 		read -r first_line < .gitignore
 
@@ -104,10 +87,8 @@ header
 
 		#page 4
 		header
-			echo " Gulp plugins installed/reinstalled"
-			echo " "
+			echo -e " Gulp plugins installed/reinstalled \n"
 			npm list --depth=0
-			echo " "
 			gulpLaunch
 	else
 		#page 5
