@@ -1,12 +1,29 @@
 #!/bin/bash
-header (){
-	reset
-	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n version: 1.0.6 \n"
-	i=$(($i+1))
-	echo -e " $i / 4 \n"
+gulpPlugins (){
+	npm i -D gulp
+	npm i -D gulp-sass
+	npm i -D gulp-concat
+	npm i -D gulp-clean-css
+	npm i -D gulp-uglify-es
+	npm i -D gulp-htmlmin
+	npm i -D gulp-debug
+	npm i -D browser-sync
+	npm i -D gulp-autoprefixer
+	npm i -D gulp-sourcemaps
+	npm i -D node-normalize-scss
+	npm i -D gulp-filesize
+	npm i -D browserslist
+	npm i -D del
+	npm i -D gulp-babel @babel/core @babel/preset-env
 }
 
-gulpLaunch (){
+header (){
+	reset
+	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n License: MIT License \n version: 1.0.7 \n"
+	echo -e " $i / $iterations \n"
+}
+
+gulpLauncher (){
 	read -r -p " run gulp now? [y/N] " response_0
 	if [[ $response_0 =~ ^([yY])$ ]]; then
 		echo " gulp launch..."
@@ -14,35 +31,47 @@ gulpLaunch (){
 	fi
 }
 
-#page 1
-header
+page_1 (){
 	echo -e " Select stylesheet syntax: \n    1) CSS (default) \n    2) SCSS \n    3) SASS \n"
 	
-	S_TYPE="onst stylesheetSyntax="
-	SASS="'sass';"
-	SCSS="'scss';"
-	CSS="'css';"
+	S_TYPE="const stylesheetSyntax="
+	SASS="sass"
+	SCSS="scss"
+	CSS="css"
 
 	read response_1
 	if  [[ $response_1 == 1 ]]; then
-		sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
-		dir_type="css"
+		sed -i -e "s/$S_TYPE.*/$S_TYPE '$CSS';/" gulpfile.js
+		dir_type=$CSS
 
 	elif  [[ $response_1 == 2 ]]; then
-		sed -i -e "s/$S_TYPE.*/$S_TYPE$SCSS/" gulpfile.js
-		dir_type="scss"
+		sed -i -e "s/$S_TYPE.*/$S_TYPE '$SCSS';/" gulpfile.js
+		dir_type=$SCSS
 
 	elif  [[ $response_1 == 3 ]]; then
-		sed -i -e "s/$S_TYPE.*/$S_TYPE$SASS/" gulpfile.js
-		dir_type="sass"
+		sed -i -e "s/$S_TYPE.*/$S_TYPE '$SASS';/" gulpfile.js
+		dir_type=$SASS
 
 	else
-		sed -i -e "s/$S_TYPE.*/$S_TYPE$CSS/" gulpfile.js
-		dir_type="css"
-	fi
+		sed -i -e "s/$S_TYPE.*/$S_TYPE '$CSS';/" gulpfile.js
+		dir_type=$CSS
 
-#page 2
-header
+	fi
+}
+
+page_2 (){
+	read -r -p " Use Babel when building? [y/N]: " response_1_1
+	
+	BABEL="const gulpBabel="
+
+	if [[ $response_1_1 =~ ^([yY])$ ]]; then
+		sed -i -e "s/$BABEL.*/$BABEL true;/" gulpfile.js
+	else
+		sed -i -e "s/$BABEL.*/$BABEL false;/" gulpfile.js
+	fi
+}
+
+page_3 (){
 	mkdir -p src/{js,css,$dir_type,fonts,img}
 	mkdir -p dist
 
@@ -67,16 +96,15 @@ header
 		cd ..
 	fi
 
-npm init -y
+	npm init -y
+}
 
-#page 3
-header
+page_4 (){
 	read -r -p " Install/reinstall gulp plugins(npm packages)? [y/N]: " response_3
 	if [[ $response_3 =~ ^([yY])$ ]]; then
 		rm -rf node_modules
 
-		gulp_plugins_list_file=`cat plugins_list`
-		npm i --save-dev $gulp_plugins_list_file
+		gulpPlugins
 
 		touch .gitignore
 		read -r first_line < .gitignore
@@ -85,13 +113,40 @@ header
 			echo "node_modules" >> .gitignore
 		fi
 
-		#page 4
 		header
 			echo -e " Gulp plugins installed/reinstalled \n"
 			npm list --depth=0
-			gulpLaunch
+			gulpLauncher
 	else
-		#page 5
 		header
-			gulpLaunch
+			gulpLauncher 
 	fi
+}
+
+main (){
+	iterations=4
+	for (( i=0; i <= $iterations; i++))
+		do
+			header
+				case $i in
+					1)
+						page_1
+					;;
+
+					2)
+						page_2
+					;;
+
+					3)
+						page_3
+					;;
+
+					4)
+						page_4
+					;;
+				esac
+		done
+}
+
+#run
+main

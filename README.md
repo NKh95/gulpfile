@@ -1,6 +1,6 @@
 ﻿# gulpfile by N.Kh.
 
->###### Version: 1.0.6
+>###### Version: 1.0.7
 
 
 ## Requirements
@@ -34,8 +34,8 @@ Build:
 
 View build result:
 
-	gulp view
+	gulp test
 
+Clean dist directory:
 
-## Оther
-In `plugins_list` file a list of plugins to install.
+	gulp clean

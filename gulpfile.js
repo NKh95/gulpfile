@@ -1,7 +1,10 @@
 "use strict"
 
-const stylesheetSyntax='css';
+//config
+const stylesheetSyntax= 'css';
+const gulpBabel= false;
 
+//plugins
 const gulp         =  require('gulp')                   ;
 const sourcemaps   =  require("gulp-sourcemaps")        ;
 const sass         =  require('gulp-sass')              ;
@@ -14,36 +17,46 @@ const uglify       =  require('gulp-uglify-es').default ;
 const browserSync  =  require('browser-sync').create()  ;
 const normalize    =  require('node-normalize-scss')    ;
 const size         =  require('gulp-filesize')          ;
+const babel        =  require('gulp-babel')             ;
 const del          =  require('del')                    ;
 const separator = '____________________________________';
 
+//directories
 let app = {
-        dir:   './src/',
-    	css:   'css/**/*.css',
-    	sass:  stylesheetSyntax + '/**/*.' + stylesheetSyntax,
-        html:  '*.html',
-        js:    'js/**/*.js',
-        img:   'img/**/*.*',
-        fonts: 'fonts/**/*.*'
-    };
+    dir:   './src/',
+	css:   'css/**/*.css',
+	sass:  stylesheetSyntax + '/**/*.' + stylesheetSyntax,
+    html:  '*.html',
+    js:    'js/**/*.js',
+    img:   'img/**/*.*',
+    fonts: 'fonts/**/*.*'
+};
  
 let build = {
-        dir:   './dist/',
-        css:   'css',
-        js:    'js',
-        img:   'img',
-        fonts: 'fonts'
-    };
-
-const html = otherTasks(app.dir + app.html, 'html');
-const js = otherTasks(app.dir + app.js, 'js');
-const css = otherTasks(app.dir + app.css, 'css');
+    dir:   './dist/',
+    css:   'css',
+    js:    'js',
+    img:   'img',
+    fonts: 'fonts'
+};
 
 //run tasks
-gulp.task('default', gulp.series(html, (stylesheetSyntax != 'css') ? SassPreprocessorTasks : css, js, BrowserSync));
-gulp.task('style', SassPreprocessorTasks);
+const html = otherTasks(app.dir + app.html, 'html');
+const css = otherTasks(app.dir + app.css, 'css');
+const javaScript = otherTasks(app.dir + app.js, 'js');
+
+gulp.task('default', 
+    gulp.series(
+        html, 
+        (stylesheetSyntax != 'css') ? SassTasks : css, 
+        javaScript, 
+        BrowserSync
+));
+
+gulp.task('style', SassTasks);
 gulp.task('build', gulp.series(cleanDist, dist));
-gulp.task('view', viewDist);
+gulp.task('test', testDist);
+gulp.task('clean', cleanDist);
 
 //function tasks
 function BrowserSync(){
@@ -52,17 +65,17 @@ function BrowserSync(){
     })
 
     if(stylesheetSyntax != 'css'){
-        gulp.watch(app.dir + app.sass, gulp.series(SassPreprocessorTasks));
+        gulp.watch(app.dir + app.sass, gulp.series(SassTasks));
         gulp.watch(app.dir + app.css).on('change', browserSync.reload);
     }else{
         gulp.watch(app.dir + app.css, gulp.series(css));
     }
 
     gulp.watch(app.dir + app.html, gulp.series(html));
-    gulp.watch(app.dir + app.js, gulp.series(js));
+    gulp.watch(app.dir + app.js, gulp.series(javaScript));
 }
 
-function SassPreprocessorTasks(){
+function SassTasks(){
     console.log(`${separator} \n\n ${stylesheetSyntax} \n`);
     return gulp.src(app.dir + app.sass)
         .on('end', () => { console.log(' ') })
@@ -100,10 +113,21 @@ function dist(done){
         .pipe(size())
         .pipe(gulp.dest(build.dir + build.css));
 
-    gulp.src(app.dir + app.js)
+   if(gulpBabel == true){
+        gulp.src(app.dir + app.js)
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(uglify())
         .pipe(size())
         .pipe(gulp.dest(build.dir + build.js));
+
+    }else{
+        gulp.src(app.dir + app.js)
+        .pipe(uglify())
+        .pipe(size())
+        .pipe(gulp.dest(build.dir + build.js));
+    }
 
     gulp.src(app.dir + app.img)
         .pipe(gulp.dest(build.dir + build.img));
@@ -114,12 +138,12 @@ function dist(done){
     done();
 }
 
-function viewDist() {
+function testDist(){
     browserSync.init({
         server: build.dir
     });
 }
 
-function cleanDist() {
-  return del([build.dir]);
+function cleanDist(){
+  return del([build.dir] + "/*");
 }
