@@ -8,8 +8,8 @@
 "use strict"
 
 // config
-const stylesheetSyntax= 'css';
-const gulpBabel= false;
+const stylesheetSyntax= 'css'; //sass,scss,css
+const gulpBabel= false;        //true or false
 
 // plugins
 const gulp         =  require('gulp')                   ;
@@ -138,16 +138,16 @@ function cleanDist(){
 }
 
 // define complex tasks
-const html = commonTask(app.dir + app.html, 'html');
-const css = commonTask(app.dir + app.css, 'css');
-const javaScript = commonTask(app.dir + app.js, 'js');
+const html       = commonTask(app.dir + app.html, 'html') ;
+const css        = commonTask(app.dir + app.css, 'css')   ;
+const javaScript = commonTask(app.dir + app.js, 'js')     ;
 
-const building = gulp.series(cleanDist, dist);
-const dev = gulp.series( watchFiles, html, (stylesheetSyntax != 'css') ? SassTask : css, javaScript);
+const building   = gulp.series(cleanDist, dist);
+const dev        = gulp.series( watchFiles, html, (stylesheetSyntax != 'css') ? SassTask : css, javaScript);
 
 // export tasks
-exports.default = dev;
-exports.style = SassTask;
-exports.build = building;
-exports.test = testDist;
-exports.clean = cleanDist;
+exports.default  = dev      ;
+exports.style    = SassTask ;
+exports.build    = building ;
+exports.test     = testDist ;
+exports.clean    = cleanDist;

@@ -1,8 +1,8 @@
 #!/bin/bash
-#GULPFILE BY N.Kh.
-#Link: https://github.com/NKh95/gulpfile_by_nkh.git
-#License: MIT License
-#Version: 1.0.8
+#	GULPFILE BY N.Kh.
+#	Link: https://github.com/NKh95/gulpfile_by_nkh.git
+#	License: MIT License
+#	Version: 1.0.8
 
 gulpPlugins (){
 	npm i -D gulp
@@ -153,5 +153,4 @@ main (){
 		done
 }
 
-#run
 main
