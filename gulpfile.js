@@ -8,7 +8,7 @@
 "use strict"
 
 // config
-const stylesheetSyntax= 'scss';
+const stylesheetSyntax= 'css';
 const gulpBabel= false;
 
 // plugins
