@@ -1,10 +1,17 @@
+/*
+*   GULPFILE BY N.Kh.
+*   Link: https://github.com/NKh95/gulpfile_by_nkh.git
+*   License: MIT License
+*   Version: 1.0.8
+*/
+
 "use strict"
 
-//config
-const stylesheetSyntax= 'css';
+// config
+const stylesheetSyntax= 'scss';
 const gulpBabel= false;
 
-//plugins
+// plugins
 const gulp         =  require('gulp')                   ;
 const sourcemaps   =  require("gulp-sourcemaps")        ;
 const sass         =  require('gulp-sass')              ;
@@ -21,7 +28,7 @@ const babel        =  require('gulp-babel')             ;
 const del          =  require('del')                    ;
 const separator = '____________________________________';
 
-//directories
+// directories
 let app = {
     dir:   './src/',
 	css:   'css/**/*.css',
@@ -40,32 +47,14 @@ let build = {
     fonts: 'fonts'
 };
 
-//run tasks
-const html = otherTasks(app.dir + app.html, 'html');
-const css = otherTasks(app.dir + app.css, 'css');
-const javaScript = otherTasks(app.dir + app.js, 'js');
-
-gulp.task('default', 
-    gulp.series(
-        html, 
-        (stylesheetSyntax != 'css') ? SassTasks : css, 
-        javaScript, 
-        BrowserSync
-));
-
-gulp.task('style', SassTasks);
-gulp.task('build', gulp.series(cleanDist, dist));
-gulp.task('test', testDist);
-gulp.task('clean', cleanDist);
-
-//function tasks
-function BrowserSync(){
+// tasks
+function watchFiles(){
     browserSync.init({
         server: app.dir
     })
 
     if(stylesheetSyntax != 'css'){
-        gulp.watch(app.dir + app.sass, gulp.series(SassTasks));
+        gulp.watch(app.dir + app.sass, gulp.series(SassTask));
         gulp.watch(app.dir + app.css).on('change', browserSync.reload);
     }else{
         gulp.watch(app.dir + app.css, gulp.series(css));
@@ -75,7 +64,7 @@ function BrowserSync(){
     gulp.watch(app.dir + app.js, gulp.series(javaScript));
 }
 
-function SassTasks(){
+function SassTask(){
     console.log(`${separator} \n\n ${stylesheetSyntax} \n`);
     return gulp.src(app.dir + app.sass)
         .on('end', () => { console.log(' ') })
@@ -88,10 +77,10 @@ function SassTasks(){
         .pipe(browserSync.stream());
 }
 
-function  otherTasks(gulpSrc, title){
-    return tasks;
+function  commonTask(gulpSrc, title){
+    return task;
 
-    function tasks(){
+    function task(){
         console.log(`${separator} \n\n ${title} \n`);
         return gulp.src(gulpSrc)
             .on('end', () => { console.log(' ') })
@@ -147,3 +136,18 @@ function testDist(){
 function cleanDist(){
   return del([build.dir] + "/*");
 }
+
+// define complex tasks
+const html = commonTask(app.dir + app.html, 'html');
+const css = commonTask(app.dir + app.css, 'css');
+const javaScript = commonTask(app.dir + app.js, 'js');
+
+const building = gulp.series(cleanDist, dist);
+const dev = gulp.series( watchFiles, html, (stylesheetSyntax != 'css') ? SassTask : css, javaScript);
+
+// export tasks
+exports.default = dev;
+exports.style = SassTask;
+exports.build = building;
+exports.test = testDist;
+exports.clean = cleanDist;
