@@ -1,8 +1,8 @@
 #!/bin/bash
 #	GULPFILE BY N.Kh.
-#	Link: https://github.com/NKh95/gulpfile_by_nkh.git
+#	Link: https://github.com/NKh95/gulpfile
 #	License: MIT License
-#	Version: 1.0.8
+#	Version: 1.0.9
 
 gulpPlugins (){
 	npm i -D gulp
@@ -24,7 +24,7 @@ gulpPlugins (){
 
 header (){
 	reset
-	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile_by_nkh.git \n License: MIT License \n Version: 1.0.8 \n"
+	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile \n License: MIT License \n Version: 1.0.9 \n"
 	echo -e " $i / $iterations \n"
 }
 
