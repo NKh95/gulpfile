@@ -12,11 +12,10 @@
 #### Installation
 
 **BASH**
-
-	chmod +x install.sh
-	
-	./install.sh
-
+>
+>	chmod +x install.sh
+>	
+>	./install.sh
 
 #### Usage
 >`gulp` - Browser-sync and build SASS/SCSS to CSS default.
