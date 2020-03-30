@@ -10,8 +10,8 @@
 > **Gulp** 4.x.x
 
 #### Installation
-
-**BASH**
+>
+>**BASH**
 >
 >	chmod +x install.sh
 >	
