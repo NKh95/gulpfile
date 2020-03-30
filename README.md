@@ -1,7 +1,4 @@
-﻿# gulpfile by N.Kh.
-
->###### Version: 1.0.9
-
+﻿## gulpfile by N.Kh. (CATASTROPHE)
 
 ## Requirements
 >###### Node.js 8.x.x
@@ -9,33 +6,31 @@
 >###### Gulp 4.x.x
 >###### BASH 4.x
 
-
+#### Requirements
+> **Node.js** >= 8.x.x
+>
+> **NPM** >= 3.5.x
+>
+> **BASH** >= 4.x
+>
+> **Gulp** 4.x.x
 
 ## Installation
-BASH:
+
+**BASH**
 
 	chmod +x install.sh
 	
 	./install.sh
 
 
-## Usage
-Browser-sync and build SASS/SCSS to CSS default:
-
-	gulp
-
-SASS/SCSS to CSS:
-
-	gulp style
-
-Build:
-
-	gulp build
-
-View build result:
-
-	gulp test
-
-Clean dist directory:
-
-	gulp clean
+#### Usage
+>`gulp` - Browser-sync and build SASS/SCSS to CSS default.
+>
+>`gulp style` - SASS/SCSS to CSS.
+>		
+>`gulp build` - Build.
+>	
+>`gulp test` - View build result.
+>
+>`gulp clean` - Clean dist directory.

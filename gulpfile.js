@@ -1,19 +1,18 @@
 /*
-*   GULPFILE BY N.Kh.
+*   GULPFILE BY N.Kh. (CATASTROPHE)
 *   Link: https://github.com/NKh95/gulpfile
 *   License: MIT License
-*   Version: 1.0.9
 */
 
 "use strict"
 
-// config
+/* config */
 
 //sass,scss,css
 const stylesheetSyntax= 'css';
 
 //true or false
-const gulpBabel= false;
+const gulpBabel= true;
 
 // plugins
 const gulp         =  require('gulp')                   ;
@@ -58,7 +57,7 @@ function watchFiles(){
     })
 
     if(stylesheetSyntax != 'css'){
-        gulp.watch(app.dir + app.sass, gulp.series(SassTask));
+        gulp.watch(app.dir + app.sass, gulp.series(sassTask));
         gulp.watch(app.dir + app.css).on('change', browserSync.reload);
     }else{
         gulp.watch(app.dir + app.css, gulp.series(css));
@@ -68,7 +67,7 @@ function watchFiles(){
     gulp.watch(app.dir + app.js, gulp.series(javaScript));
 }
 
-function SassTask(){
+function sassTask(){
     console.log(`${separator} \n\n ${stylesheetSyntax} \n`);
     return gulp.src(app.dir + app.sass)
         .on('end', () => { console.log(' ') })
@@ -106,7 +105,7 @@ function dist(done){
         .pipe(size())
         .pipe(gulp.dest(build.dir + build.css));
 
-   if(gulpBabel == true){
+    if(gulpBabel == true){
         gulp.src(app.dir + app.js)
         .pipe(babel({
             presets: ['@babel/env']
@@ -146,12 +145,12 @@ const html       = commonTask(app.dir + app.html, 'html') ;
 const css        = commonTask(app.dir + app.css, 'css')   ;
 const javaScript = commonTask(app.dir + app.js, 'js')     ;
 
-const building   = gulp.series(cleanDist, dist);
-const dev        = gulp.series( watchFiles, html, (stylesheetSyntax != 'css') ? SassTask : css, javaScript);
+const building   = gulp.series(cleanDist, (stylesheetSyntax != 'css') ? sassTask : css, dist)
+const dev        = gulp.series(watchFiles, html, (stylesheetSyntax != 'css') ? sassTask : css, javaScript);
 
 // export tasks
 exports.default  = dev      ;
-exports.style    = SassTask ;
+exports.style    = sassTask ;
 exports.build    = building ;
 exports.test     = testDist ;
 exports.clean    = cleanDist;

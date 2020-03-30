@@ -1,8 +1,8 @@
-#!/bin/bash
-#	GULPFILE BY N.Kh.
+#	GULPFILE BY N.Kh. (CATASTROPHE)
 #	Link: https://github.com/NKh95/gulpfile
 #	License: MIT License
-#	Version: 1.0.9
+
+#!/bin/bash
 
 gulpPlugins (){
 	npm i -D gulp
@@ -24,15 +24,40 @@ gulpPlugins (){
 
 header (){
 	reset
-	echo -e "\n GULPFILE BY N.Kh. \n\n Link: https://github.com/NKh95/gulpfile \n License: MIT License \n Version: 1.0.9 \n"
+	echo -e "\n $1 \n"
 	echo -e " $i / $iterations \n"
+}
+
+about (){
+	reset
+	echo -e "\n $1 \n"
+	echo "  Link: https://github.com/NKh95/gulpfile"
+	echo "  License: MIT License"
+	echo -e "\n\n"
+
+	read -p "  Press ENTER to continue..."
+}
+
+commands (){
+	echo " "
+	echo " Gulpfile commands:"
+	echo " "
+	echo "  gulp       - Browser-sync and build SASS/SCSS to CSS default."
+	echo "  gulp style - SASS/SCSS to CSS."
+	echo "  gulp build - Build."
+	echo "  gulp test  - View build result."
+	echo "  gulp clean - Clean dist directory."
+	echo " "
 }
 
 gulpLauncher (){
 	read -r -p " run gulp now? [y/N] " response_0
 	if [[ $response_0 =~ ^([yY])$ ]]; then
-		echo " gulp launch..."
+		echo "  gulp launch..."
+		commands
 		gulp
+	else
+		commands
 	fi
 }
 
@@ -86,7 +111,7 @@ page_3 (){
 			touch index.html
 
 			cd js
-				touch script.js
+				touch main.js
 			cd ..
 
 			cd css
@@ -118,21 +143,25 @@ page_4 (){
 			echo "node_modules" >> .gitignore
 		fi
 
-		header
+		header "$title"
 			echo -e " Gulp plugins installed/reinstalled \n"
 			npm list --depth=0
 			gulpLauncher
 	else
-		header
-			gulpLauncher 
+		header "$title"
+			gulpLauncher
 	fi
 }
 
 main (){
+	title="GULPFILE BY N.Kh. (CATASTROPHE)"
 	iterations=4
+
+	about "$title"
+
 	for (( i=0; i <= $iterations; i++))
 		do
-			header
+			header "$title"
 				case $i in
 					1)
 						page_1
