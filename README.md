@@ -1,4 +1,4 @@
-﻿## gulpfile by N.Kh. (CATASTROPHE)
+﻿## Gulpfile by N.Kh. (CATASTROPHE)
 
 ### Requirements
 > **Node.js** >= 8.x.x
