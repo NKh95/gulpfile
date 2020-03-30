@@ -1,6 +1,6 @@
 ﻿## gulpfile by N.Kh. (CATASTROPHE)
 
-#### Requirements
+### Requirements
 > **Node.js** >= 8.x.x
 >
 > **NPM** >= 3.5.x
@@ -9,7 +9,7 @@
 >
 > **Gulp** 4.x.x
 
-#### Installation
+### Installation
 >
 >**BASH**
 >
@@ -17,7 +17,7 @@
 >	
 >`./install.sh`
 
-#### Usage
+### Usage
 >`gulp` - Browser-sync and build SASS/SCSS to CSS default.
 >
 >`gulp style` - SASS/SCSS to CSS.
